@@ -286,7 +286,7 @@ em,.it{font-style:italic;font-family:var(--f-head)}
 .pin__lbl{position:absolute;left:14px;top:-15px;white-space:nowrap;background:#fff;color:var(--ink);font:600 13px/1 var(--f-body);padding:8px 11px;border-radius:999px;box-shadow:0 6px 16px rgba(30,21,23,.18)}
 .pin.is-on .pin__lbl{background:var(--wine);color:#fff}
 .leaflet-container{font-family:var(--f-body)}
-@media (max-width:900px){.where__grid{grid-template-columns:1fr}.map{min-height:380px}.map__canvas{min-height:320px}}
+@media (max-width:900px){.where__grid{grid-template-columns:1fr}.map{min-height:360px;order:-1}.map__canvas{min-height:300px}}
 
 /* питання */
 .faq{background:var(--paper-2)}
@@ -336,7 +336,7 @@ em,.it{font-style:italic;font-family:var(--f-head)}
 .film h2{font-size:clamp(34px,5vw,68px);max-width:820px;margin-bottom:28px;color:#fff}
 .film h2 em{color:var(--camel-2)}
 .film__cr{position:absolute;z-index:2;right:var(--pad);bottom:12px;margin:0;font-size:11.5px;color:rgba(255,255,255,.55);max-width:560px;text-align:right}
-@media (max-width:820px){.film{min-height:0;aspect-ratio:4/5}.film__cr{left:var(--pad);text-align:left}.film__in{padding-bottom:64px}}
+@media (max-width:820px){.film{min-height:0;aspect-ratio:4/5}.film__cr{left:var(--pad);right:var(--pad);bottom:10px;text-align:left;font-size:10.5px;line-height:1.35}.film__in{padding-bottom:96px}.film h2{margin-bottom:20px}}
 
 /* підвал */
 .foot{background:var(--ink);color:rgba(246,241,235,.75);padding:56px 0 110px;font-size:14.5px}
@@ -861,7 +861,11 @@ em,.it{font-style:italic;font-family:var(--f-head)}
     if (user && auto) { clearInterval(auto); auto = null; }
     if (user) oi = order.indexOf(k);
   }
-  cards.forEach(function(c){ c.addEventListener('click', function(){ show(c.getAttribute('data-office'), true); }); });
+  cards.forEach(function(c){ c.addEventListener('click', function(){
+    show(c.getAttribute('data-office'), true);
+    var r = mapEl.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > window.innerHeight) mapEl.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+  }); });
   function initMap(){
     if (map || !window.L) return;
     map = L.map(mapEl, {scrollWheelZoom: false, dragging: !L.Browser.mobile, tap: false}).setView(OFF.lodz.ll, 15);
